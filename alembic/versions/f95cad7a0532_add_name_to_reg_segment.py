@@ -28,8 +28,6 @@ def upgrade() -> None:
                     sa.PrimaryKeyConstraint('id')
                     )
 
-    op.add_column('setups', sa.Column('title', sa.Integer(), nullable=True))
-    op.add_column('setups', sa.Column('parts', sa.JSON(), nullable=True))
     op.alter_column('sop_segment_on_regulation_segment', 'similarity',
                     existing_type=sa.REAL(),
                     type_=sa.Float(precision=2),
