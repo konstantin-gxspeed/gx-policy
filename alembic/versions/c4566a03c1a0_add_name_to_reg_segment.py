@@ -30,8 +30,7 @@ def upgrade() -> None:
                           'sop_segment_id'], ['id'], onupdate='CASCADE', ondelete='CASCADE')
     op.create_foreign_key(None, 'sop_segment_on_regulation_segment', 'regulation_segments', [
                           'regulation_segment_id'], ['id'], onupdate='CASCADE', ondelete='CASCADE')
-    op.drop_column('sop_segment_on_regulation_segment', 'sop_id')
-    op.drop_column('sop_segment_on_regulation_segment', 'regulation_id')
+
     # ### end Alembic commands ###
 
 
