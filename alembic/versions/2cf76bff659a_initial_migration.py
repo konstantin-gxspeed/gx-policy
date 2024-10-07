@@ -38,7 +38,7 @@ def upgrade() -> None:
                     sa.PrimaryKeyConstraint('id')
                     )
     
-    op.create_table('sop_on_regulations',
+    op.create_table('sop_segment_on_regulation_segment',
                 sa.Column('id', sa.Integer(), nullable=False),
                 sa.Column('sop_segment_id', sa.Integer(), nullable=False),
                 sa.Column('regulation_segment_id', sa.Integer(), nullable=False),
