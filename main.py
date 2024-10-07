@@ -159,7 +159,6 @@ parts = [11, 210]
 @app.on_event('startup')
 @repeat_every(seconds=3000)
 async def parse_regulations():
-    return
     try:
         db = SessionLocal()
         titles = requests.get(
