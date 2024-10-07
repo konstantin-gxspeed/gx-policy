@@ -1,0 +1,92 @@
+<link href="/static//css//tabler-vendor.css" rel="stylesheet">
+{% extends "sqladmin/layout.html" %}
+
+{% block content %}
+
+<div class="col-12">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Setup</h3>
+    </div>
+    <form id="setup-form">
+    <div class="card-body border-bottom py-3">
+      <div class="d-flex justify-content-between">
+        <div class="dropdown col-4">
+          <div class="mb-2">
+            <div class="form-label">Title</div>
+              <select class="form-select" id="title">
+                <option value="21">Food and Drugs</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row row-deck row-cards">
+          <div class="mb-3">
+            <div class="form-label" >Parts</div>
+            <select type="text" class="form-select " id="regulation-parts" value="" multiple="multiple" tabindex="-1">
+              {% for value,name  in all_parts.items() %}
+              <option value="{{value}}" {%if value in setup.parts %} selected {% endif %} >{{name}}</option>
+              {% endfor %}
+            </select>
+
+          </div>
+        </div>
+        <button class="btn btn-primary" > Save</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+<script src="/static/javascript/tom.js" defer=""></script>
+
+<script>
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+    	var el;
+    	window.TomSelect && (new TomSelect(el=document.getElementById('regulation-parts'), {
+    		copyClassesToDropdown: false,
+    		dropdownParent: 'body',
+    		controlInput: '<input>',
+    		render:{
+    			item: function(data,escape) {
+            
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    			option: function(data,escape){
+          
+    				if( data.customProperties ){
+    					return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+    				}
+    				return '<div>' + escape(data.text) + '</div>';
+    			},
+    		},
+    	}));
+      
+      $('#setup-form').submit((e)=>{
+        e.preventDefault()
+        const parts = $('#regulation-parts').val()
+        const title = $('#title').val()
+        $.post({
+          url: '/api/setup/',
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          data: JSON.stringify({
+            title,
+            parts
+          })
+        })
+
+      })
+    });
+    
+    // @formatter:on
+  
+</script>
+{% endblock %}

@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for name in ['id','name'] %} {% set label =
+            {% for name in ['id','name','abstract'] %} {% set label =
             model_view._column_labels.get(name, name) %}
             <tr>
               <td>{{ label }}</td>
@@ -51,10 +51,9 @@
           </tbody>
         </table>
       </div>
-      {% set sops_on_regulations = model_view.get_detail_value(model,
-      "sops_on_regulations")[0] %}
+  
       <div class="card-header">
-        <h3 class="card-title">Regulations</h3>
+        <h3 class="card-title">Segments</h3>
         <div class="ms-auto"></div>
       </div>
       <div class="table-responsive">
@@ -63,22 +62,22 @@
             <tr>
               <th>
                 <a href="{{ request.url.include_query_params(sort='desc') }}"
-                  >Name</a
+                  >Id</a
                 >
               </th>
               <th>
                 <a href="{{ request.url.include_query_params(sort='asc') }}"
-                  >Relevance</a
+                  >Details</a
                 >
               </th>
             </tr>
           </thead>
           <tbody>
-            {% for row in sops_on_regulations %}
-            <tr style="background-color: {{row.color()}}">
+            {% for row in model.segments %}
+            <tr {%if row.has_changed %} style="background-color:#ff2137;"{% endif %}>
               <input type="hidden" value="{{ get_object_identifier(row) }}" />
-              <td>{{ row.regulation.name }}</td>
-              <td>{{ "{:.0f}".format(row.normalize()*100) }}%</td>
+              <td>{{ row.id }}</td>
+              <td>{{ row.raw_content }}%</td>
 
               <td class="text-end">
                 {% if model_view.can_edit %}

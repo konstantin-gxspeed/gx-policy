@@ -65,10 +65,10 @@
     <div class="table-responsive">
       <table class="table card-table table-vcenter text-nowrap">
         <thead>
-          <tr>
+          <tr >
             <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all"
                 id="select-all"></th>
-            <th class="w-1"></th>
+          
             {% for name in model_view._list_prop_names %}
             {% set label = model_view._column_labels.get(name, name) %}
             <th>
@@ -91,7 +91,8 @@
         </thead>
         <tbody>
           {% for row in pagination.rows %}
-          <tr>
+          
+          <tr {%if row.requires_attention %} style="background-color:#ff2137;"{% endif %}>
             <td>
               <input type="hidden" value="{{ get_object_identifier(row) }}">
               <input class="form-check-input m-0 align-middle select-box" type="checkbox" aria-label="Select item">
@@ -109,7 +110,7 @@
             <td><a href="{{ model_view._url_for_details_with_prop(request, row, name) }}">{{ formatted_value }}</a></td>
             {% endif %}
             {% else %}
-            <td>{{ formatted_value }}</td>
+            <td><a href="{{ model_view._build_url_for('admin:details', request, row) }}">{{ formatted_value }}</a></td>
             {% endif %}
             {% endfor %}
             <td class="text-end">
