@@ -32,7 +32,7 @@ def upgrade() -> None:
     op.create_table('sop_on_regulations',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('regulation_id', sa.Integer(), nullable=False),
-                    sa.Column('similarity', sa.Integer(), nullable=False),
+                    sa.Column('similarity', sa.REAL(), nullable=False),
                     sa.Column('embedding', pgvector.sqlalchemy.Vector(
                         dim=768), nullable=True),
                     sa.PrimaryKeyConstraint('id')
