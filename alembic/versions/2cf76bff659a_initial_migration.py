@@ -37,6 +37,16 @@ def upgrade() -> None:
                         dim=768), nullable=True),
                     sa.PrimaryKeyConstraint('id')
                     )
+    
+    op.create_table('sop_on_regulations',
+                sa.Column('id', sa.Integer(), nullable=False),
+                sa.Column('sop_segment_id', sa.Integer(), nullable=False),
+                sa.Column('regulation_segment_id', sa.Integer(), nullable=False),
+                sa.Column('similarity', sa.Integer(), nullable=False),
+                sa.Column('embedding', pgvector.sqlalchemy.Vector(
+                    dim=768), nullable=True),
+                sa.PrimaryKeyConstraint('id')
+    )
 
     op.create_index(op.f('ix_regulation_segments_id'),
                     'regulation_segments', ['id'], unique=False)
