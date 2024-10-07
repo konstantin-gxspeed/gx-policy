@@ -25,10 +25,7 @@ def upgrade() -> None:
                     existing_type=sa.REAL(),
                     type_=sa.Float(precision=2),
                     existing_nullable=True)
-    op.drop_constraint('sop_segment_on_regulation_segment_regulation_id_fkey',
-                       'sop_segment_on_regulation_segment', type_='foreignkey')
-    op.drop_constraint('sop_segment_on_regulation_segment_sop_id_fkey',
-                       'sop_segment_on_regulation_segment', type_='foreignkey')
+  
     op.create_foreign_key(None, 'sop_segment_on_regulation_segment', 'sop_segments', [
                           'sop_segment_id'], ['id'], onupdate='CASCADE', ondelete='CASCADE')
     op.create_foreign_key(None, 'sop_segment_on_regulation_segment', 'regulation_segments', [
