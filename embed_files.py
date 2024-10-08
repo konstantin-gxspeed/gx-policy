@@ -33,7 +33,7 @@ def embed_files(files_list):
         embedded_object = {
             'file_name': document['file_name'],
             "abstract": abstract,
-            "owner": owner.rsplit("this document is")[1].rsplit('**')[0],
+            "owner": owner.rsplit("**")[1],
             'content': []
         }
 

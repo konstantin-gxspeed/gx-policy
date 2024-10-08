@@ -37,7 +37,7 @@ class SetupView(BaseView):
         with SessionLocal() as db:
             setup = db.query(Setup).first()
             if not setup:
-                setup = Setup()
+                setup = Setup(parts=[])
                 db.add(setup)
                 db.commit()
         print(parts)
@@ -99,7 +99,7 @@ def update_setup(setup_input: SetupModel, db: Session = Depends(get_db)):
     setup = db.query(Setup).first()
     if not setup:
         print(setup.parts)
-        setup = Setup()
+        setup = Setup(parts=[]  )
     setup.parts = setup_input.parts
     setup.title = setup_input.title
     db.commit()
@@ -166,7 +166,7 @@ async def parse_regulations():
         # db.execute(text("truncate regulation_segments RESTART IDENTITY CASCADE;"))
         # db.execute(text("truncate regulations  RESTART IDENTITY CASCADE;"))
         # db.commit()
-        print("AAA")
+
         found_title = first(
             x for x in titles['titles'] if x['number'] == title)
         latest_issue_date = found_title['latest_issue_date']
@@ -174,7 +174,7 @@ async def parse_regulations():
         for part in tqdm.tqdm(parts, desc="reading regulations"):
             regulation = db.query(Regulation).where(Regulation.title == str(title), Regulation.part == str(
                 part)).order_by(desc(Regulation.latest_amendment_date)).first()
-            print(regulation)
+
             if not regulation:
                 reg_data = get_data(title=title, part=part,
                                     latest_issue_date=latest_issue_date)
