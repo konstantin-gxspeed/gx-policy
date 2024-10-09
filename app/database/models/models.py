@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, Date, Float, UniqueConstraint, Boolean,JSON
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, Date, Float, UniqueConstraint, Boolean, JSON
 from sqlalchemy.orm import mapped_column, DeclarativeBase, relationship, backref
 from pgvector.sqlalchemy import Vector
 import json
@@ -13,6 +13,8 @@ class Setup(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(Integer)
     parts = Column(JSON)
+    threshhold = Column(Integer)
+
 
 class SopOnRegulation(Base):
     __tablename__ = 'sop_on_regulations'

@@ -99,7 +99,7 @@ def update_setup(setup_input: SetupModel, db: Session = Depends(get_db)):
     setup = db.query(Setup).first()
     if not setup:
         print(setup.parts)
-        setup = Setup(parts=[]  )
+        setup = Setup(parts=[])
     setup.parts = setup_input.parts
     setup.title = setup_input.title
     db.commit()
@@ -116,7 +116,7 @@ def create_sops(files: List[UploadFile] = File(), db: Session = Depends(get_db))
         text("truncate sop_segment_on_regulation_segment restart identity cascade"))
     db.commit()
     file_names = []
-
+    setup = db.query(Setup).first()
     for file in files:
 
         file_names.append(file.file)
@@ -131,14 +131,14 @@ def create_sops(files: List[UploadFile] = File(), db: Session = Depends(get_db))
                 sop_id=sop_model.id, raw_content=content['content'], embedding=content['embedding'])
             db.add(segment_model)
         db.commit()
-        query_result = db.execute(text("""
+        query_result = db.execute(text(f"""
                                         SELECT
 	                                        regulation_segments.id as regulation_segment_id ,
 	                                        sop_segments.id as sop_segment_id,
 	                                        (1 - (regulation_segments.embedding <=> sop_segments.embedding)) as cosine_similarity
                                         FROM regulation_segments
                                         JOIN sop_segments on 1=1
-                                        WHERE (1 - (regulation_segments.embedding <=> sop_segments.embedding)) > 0.5
+                                        WHERE (1 - (regulation_segments.embedding <=> sop_segments.embedding)) > {setup.threshhold}
                                         ORDER BY cosine_similarity desc
                                         """))
     for (regulation_segment_id, sop_segment_id, cosine_similarity) in query_result.fetchall():

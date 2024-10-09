@@ -68,7 +68,9 @@
           <tr >
             <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all"
                 id="select-all"></th>
-          
+            <th>
+              Requires Attention
+            </th>
             {% for name in model_view._list_prop_names %}
             {% set label = model_view._column_labels.get(name, name) %}
             <th>
@@ -92,11 +94,15 @@
         <tbody>
           {% for row in pagination.rows %}
           
-          <tr {%if row.requires_attention %} style="background-color:#ff2137;"{% endif %}>
+          <tr >
             <td>
               <input type="hidden" value="{{ get_object_identifier(row) }}">
               <input class="form-check-input m-0 align-middle select-box" type="checkbox" aria-label="Select item">
             </td>
+            <td>
+              {%if row.requires_attention %}<img src="/static/images/alert-triangle.svg" > </img>{% endif %}
+            </td>
+
             {% for name in model_view._list_prop_names %}
             {% set value, formatted_value = model_view.get_list_value(row, name) %}
             {% if name in model_view._relation_names %}

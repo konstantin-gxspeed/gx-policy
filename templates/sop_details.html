@@ -61,9 +61,10 @@
           <thead>
             <tr>
               <th>
-                <a href="{{ request.url.include_query_params(sort='desc') }}"
-                  >Id</a
-                >
+                Requires Attention
+              </th>
+              <th>
+            
               </th>
               <th>
                 <a href="{{ request.url.include_query_params(sort='asc') }}"
@@ -74,9 +75,12 @@
           </thead>
           <tbody>
             {% for row in model.segments %}
-            <tr {%if row.has_changed %} style="background-color:#ff2137;"{% endif %}>
+            <tr >
               <input type="hidden" value="{{ get_object_identifier(row) }}" />
-              <td>{{ row.id }}</td>
+              <td>
+                {%if row.has_changed %}<img src="/static/images/alert-triangle.svg" > </img>{% endif %}
+              </td>
+  
               <td>{{ row.raw_content }}%</td>
 
               <td class="text-end">
